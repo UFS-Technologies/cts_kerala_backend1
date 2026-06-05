@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config(); // Reloaded env
 var http = require('http');
 var server = http.Server(app);
 
