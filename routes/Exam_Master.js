@@ -86,12 +86,32 @@ Exam_Master.Delete_Exam_Master(req.params.Exam_Master_Id_, function (err, rows)
   }
   });
   }
- catch (e) 
- {
- }
- finally 
- {
- }
-  });
-  module.exports = router;
+  catch (e) 
+  {
+  }
+  finally 
+  {
+  }
+   });
+ router.get('/Get_Exam_Master_By_Student/:Student_Id_?',function(req,res,next)
+ { 
+   try 
+   {
+     Exam_Master.Get_Exam_Master_By_Student(req.params.Student_Id_, function (err, rows) 
+     {
+       if (err) 
+       {
+         res.json(err);
+       }
+       else 
+       {
+         res.json(rows);
+       }
+     });
+   }
+   catch (e) 
+   {
+   }
+ });
+ module.exports = router;
 
