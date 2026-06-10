@@ -269,7 +269,7 @@ Update_Certificate_Date: async function (Student_Course_)
     try 
     {
         const result1 = await (new storedProcedure('Update_Certificate_Date', [Student_Course_.Student_Course_Id,
-            Student_Course_.Certificate_Date,Student_Course_.Certificate_Grade], connection)).result();        
+            Student_Course_.Certificate_Date,Student_Course_.Certificate_Grade,Student_Course_.Certificate_Status], connection)).result();        
         //await connection.commit();
         connection.release();
         rs( result1);
@@ -304,11 +304,26 @@ Save_Mark_List_Master: async function (Mark_List_) {
     var connection = await pool.getConnection();
     try 
     {
-       console.log(Mark_List_)
+        console.log(Mark_List_)
+        
+        let is_admin = false;
+        if (Mark_List_.User_Id) {
+            const [userRows] = await connection.query("SELECT User_Type FROM users WHERE Users_Id = ?", [Mark_List_.User_Id]);
+            if (userRows && userRows.length > 0 && userRows[0].User_Type === 1) {
+                is_admin = true;
+            }
+        }
+        
+        let status = 'Pending';
+        if (is_admin && Mark_List_.Mark_List_Status) {
+            status = Mark_List_.Mark_List_Status;
+        }
+
         const result1 = await (new storedProcedure('Save_Mark_List', [Mark_List_.Mark_List_Id ,Mark_List_.Student_Id,
             Mark_List_.Student_Course_Part_Id,Mark_List_.User_Id,Mark_List_.Grade,
             Mark_List_.Part_Id,Mark_List_.Part_Name,Mark_List_.Month_Id,Mark_List_.Month_Name,
-            Mark_List_.Year_Id,Mark_List_.Year_Name,Mark_List_.Issue_Date,Mark_List_.Mark_List_Data], connection)).result();
+            Mark_List_.Year_Id,Mark_List_.Year_Name,Mark_List_.Issue_Date,Mark_List_.Mark_List_Data,
+            status], connection)).result();
         // const result1 = await (new storedProcedure('Save_Mark_List', [Mark_List_Data ], connection)).result();
         
         //await connection.commit();

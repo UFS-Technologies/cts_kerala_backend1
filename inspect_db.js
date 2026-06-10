@@ -11,8 +11,8 @@ function query(sql, args = []) {
 
 async function main() {
   try {
-    const sp = await query("SHOW CREATE PROCEDURE Get_Course_Part_Mark");
-    console.log("STORED PROCEDURE Get_Course_Part_Mark:\n", sp[0]['Create Procedure']);
+    const sp = await query("SHOW CREATE PROCEDURE Load_Student_Part");
+    console.log("STORED PROCEDURE Load_Student_Part:\n", sp[0]['Create Procedure']);
   } catch (err) {
     console.error("Error inspecting database:", err);
   } finally {
